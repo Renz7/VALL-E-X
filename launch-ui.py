@@ -6,8 +6,9 @@ import pathlib
 import time
 import tempfile
 import platform
-import webbrowser
 import sys
+import api
+
 print(f"default encoding is {sys.getdefaultencoding()},file system encoding is {sys.getfilesystemencoding()}")
 print(f"You are using Python version {platform.python_version()}")
 if(sys.version_info[0]<3 or sys.version_info[1]<7):
@@ -617,8 +618,8 @@ def main():
                     btn_4.click(infer_long_text,
                               inputs=[textbox_4, preset_dropdown_4, prompt_file_4, language_dropdown_4, accent_dropdown_4],
                               outputs=[text_output_4, audio_output_4])
-
-    webbrowser.open("http://127.0.0.1:7860")
+    # attach api.app to gradio
+    app.server_app.mount("/api", api.app)
     app.launch()
 
 if __name__ == "__main__":
