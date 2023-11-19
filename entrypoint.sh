@@ -2,4 +2,4 @@
 
 echo "starting launch-ui..."
 
-python ./launch-ui.py
+python3 ./launch-ui.py

@@ -12,7 +12,7 @@ import time
 from logging import getLogger
 
 import uvicorn
-from fastapi import UploadFile, FastAPI,Form
+from fastapi import UploadFile, FastAPI
 from fastapi.responses import FileResponse
 from scipy.io.wavfile import write as write_wav
 
@@ -48,5 +48,10 @@ async def voice_clone(prompt_audio: UploadFile, prompt_text: str, transcript: st
                         filename="".join(prompt_audio.filename.split(".")[:-1]) + "-out.wav")
 
 
+@app.get("/health")
+def health():
+    return "ok"
+
+
 if __name__ == '__main__':
-    uvicorn.run(app=app, host="0.0.0.0", port=8001,root_path="/tts")
+    uvicorn.run(app=app, host="0.0.0.0", port=8001, root_path="/tts")
