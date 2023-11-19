@@ -4,6 +4,8 @@ WORKDIR /vallex
 
 COPY . /vallex/
 
-RUN pip install -r requirements.txt --ignore-installed -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip3 install -r requirements.txt --ignore-installed -i https://pypi.douban.com/simple
+
+RUN python3 prepare.py
 
 ENTRYPOINT [ "sh", "entrypoint.sh" ]
