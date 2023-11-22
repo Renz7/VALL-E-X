@@ -12,7 +12,7 @@ import time
 from logging import getLogger
 
 import uvicorn
-from fastapi import UploadFile, FastAPI
+from fastapi import UploadFile, FastAPI, Form
 from fastapi.responses import FileResponse
 from scipy.io.wavfile import write as write_wav
 
@@ -32,18 +32,20 @@ app = FastAPI()
 
 
 @app.post("/voice_clone")
-async def voice_clone(prompt_audio: UploadFile, prompt_text: str, transcript: str = None):
+async def voice_clone(prompt_audio: UploadFile, prompt_text: str = Form(), transcript: str = None):
     logger.info("start making prompt")
-    prompt_name = "prompt" + time.time().hex()
+    prompt_name = f"prompt-{time.time()}"
     tmpfp = tempfile.mktemp(suffix=".wav", prefix="VALL-E-X-")
     with open(tmpfp, "wb") as f:
         f.write(await prompt_audio.read())
         f.flush()
     make_prompt(prompt_name, tmpfp, None)
-    logger.info("prompt {} made, start generate audio", prompt_name)
+    logger.info("prompt %s made, start generate audio", prompt_name)
     wav_array = generate_audio(prompt_text, prompt=prompt_name)
     write_wav(tmpfp + ".out", SAMPLE_RATE, wav_array)
     logger.info("audio generated, start streaming")
+    return FileResponse()
+
     return FileResponse(wav_array, media_type="audio/wav",
                         filename="".join(prompt_audio.filename.split(".")[:-1]) + "-out.wav")
 

@@ -641,9 +641,7 @@ def main():
                                 inputs=[textbox_4, preset_dropdown_4, prompt_file_4, language_dropdown_4,
                                         accent_dropdown_4],
                                 outputs=[text_output_4, audio_output_4])
-    # attach api.app to gradio
-    app.app.mount("/api", api.app)
-    app.launch(root_path="/tts/")
+    app.launch()
 
 
 if __name__ == "__main__":
