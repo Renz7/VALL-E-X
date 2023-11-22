@@ -44,10 +44,7 @@ async def voice_clone(prompt_audio: UploadFile, prompt_text: str = Form(), trans
     wav_array = generate_audio(prompt_text, prompt=prompt_name)
     write_wav(tmpfp + ".out", SAMPLE_RATE, wav_array)
     logger.info("audio generated, start streaming")
-    return FileResponse()
-
-    return FileResponse(wav_array, media_type="audio/wav",
-                        filename="".join(prompt_audio.filename.split(".")[:-1]) + "-out.wav")
+    return FileResponse(tmpfp + ".out", filename="out.wav")
 
 
 @app.get("/health")
